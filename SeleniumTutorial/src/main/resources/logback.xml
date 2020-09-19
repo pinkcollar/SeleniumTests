@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="CONSOLE"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <append>false</append>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg - \(%file:%line\) %n</pattern>
+        </encoder>
+        <immediateFlush>false</immediateFlush>
+    </appender>
+    <appender name="WARN" class="ch.qos.logback.core.FileAppender">
+        <file>logs/warn.log</file>
+        <append>false</append>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>warn</level>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg - \(%file:%line\) %n</pattern>
+        </encoder>
+    </appender>
+    <appender name="DEBUG"
+              class="ch.qos.logback.core.FileAppender">
+        <file>logs/debug.log</file>
+        <append>false</append>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg - \(%file:%line\) %n</pattern>
+        </encoder>
+    </appender>
+    <appender name="INFO" class="ch.qos.logback.core.FileAppender">
+        <file>logs/info.log</file>
+        <append>false</append>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg - \(%file:%line\) %n</pattern>
+        </encoder>
+    </appender>
+    <appender name="ERROR"
+              class="ch.qos.logback.core.FileAppender">
+        <file>logs/error.log</file>
+        <append>false</append>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>error</level>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg - \(%file:%line\) %n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="INFO" />
+        <appender-ref ref="DEBUG" />
+        <appender-ref ref="WARN" />
+        <appender-ref ref="ERROR" />
+    </root>
+
+</configuration>
