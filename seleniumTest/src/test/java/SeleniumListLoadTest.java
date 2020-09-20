@@ -1,17 +1,14 @@
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class SeleniumListLoadTest {
     private static final Logger logger = LogManager.getLogger(SeleniumListLoadTest.class);
@@ -43,7 +40,8 @@ public class SeleniumListLoadTest {
     }
 
     @Test
-    public void ListLoadTest2() {
+    @Ignore
+    public void StatusUpdateTest() {
         try {
             taskListPage.creatTask("Expired", "01/01/2013", false);
             try {
@@ -91,10 +89,47 @@ public class SeleniumListLoadTest {
         }
     }
 
+    @Test
+    public void xssPopupTest(){
+        String inputScript = "<script>alert(\"XSS!\")</script>;";
+        taskListPage.getTaskNameTextField().sendKeys(inputScript);
+        taskListPage.getAddItemButton().click();
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.alertIsPresent());
+
+            Alert alert = driver.switchTo().alert();
+
+            System.out.println(alert.getText());
+            Assert.assertTrue(alert.getText().equals("XSS!"));
+            driver.switchTo().alert().accept();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e){
+
+            }
+            Assert.assertFalse(isAlertPresent(alert), "Alert still present" );
+        } catch (NoAlertPresentException e){
+
+        }
+    }
+
 
     @AfterClass(enabled = true)
     public void tearDown() {
         if (driver != null)
             driver.quit();
+    }
+
+    public boolean isAlertPresent(Alert alert){
+        try
+        {
+            driver.switchTo().alert();
+            return true;
+        }   // try
+        catch (NoAlertPresentException Ex)
+        {
+            return false;
+        }   // catch
     }
 }
